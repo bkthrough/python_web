@@ -22,9 +22,11 @@ def get(path):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             return func(*args, **kw)
+
         wrapper.__method__ = 'GET'
         wrapper.__route__ = path
         return wrapper
+
     return decorator
 
 
@@ -36,9 +38,11 @@ def post(path):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             return func(*args, **kw)
+
         wrapper.__method__ = 'POST'
         wrapper.__route__ = path
         return wrapper
+
     return decorator
 
 
@@ -83,17 +87,15 @@ def has_request_arg(fn):
         if name == 'request':
             found = True
             continue
-        if found and (param.kind != inspect.Parameter.VAR_POSITIONAL and
-                      param.kind != inspect.Parameter.KEYWORD_ONLY and
-                      param.kind != inspect.Parameter.VAR_KEYWORD):
+        if found and (param.kind != inspect.Parameter.VAR_POSITIONAL
+                      and param.kind != inspect.Parameter.KEYWORD_ONLY
+                      and param.kind != inspect.Parameter.VAR_KEYWORD):
             raise ValueError('request parameter must be the last named \
-                parameter in function: %s%s' % (
-                fn.__name__, str(sig)))
+                parameter in function: %s%s' % (fn.__name__, str(sig)))
     return found
 
 
 class RequestHandler(object):
-
     def __init__(self, app, fn):
         self._app = app
         self._func = fn
@@ -121,8 +123,8 @@ class RequestHandler(object):
                     params = await request.post()
                     kw = dict(**params)
                 else:
-                    return web.HTTPBadRequest('Unsupported Content-Type: %s'
-                                              % request.content_type)
+                    return web.HTTPBadRequest('Unsupported Content-Type: %s' %
+                                              request.content_type)
             if request.method == 'GET':
                 qs = request.query_string
                 if qs:
@@ -175,9 +177,9 @@ def add_route(app, fn):
             inspect.isgeneratorfunction(fn):
         pass
         # fn = asyncio.coroutine(fn)
-    logging.info('add route %s %s => %s(%s)' % (
-        method, path, fn.__name__, ', '.join(inspect.signature(fn).
-                                             parameters.keys())))
+    logging.info('add route %s %s => %s(%s)' %
+                 (method, path, fn.__name__, ', '.join(
+                     inspect.signature(fn).parameters.keys())))
     app.router.add_route(method, path, RequestHandler(app, fn))
 
 
@@ -186,9 +188,9 @@ def add_routes(app, module_name):
     if n == (-1):
         mod = __import__(module_name, globals(), locals())
     else:
-        name = module_name[n+1:]
-        mod = getattr(__import__(
-            module_name[:n], globals(), locals(), [name]), name)
+        name = module_name[n + 1:]
+        mod = getattr(__import__(module_name[:n], globals(), locals(), [name]),
+                      name)
     for attr in dir(mod):
         if attr.startswith('_'):
             continue
