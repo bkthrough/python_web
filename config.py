@@ -17,4 +17,20 @@ def merge(default, override):
 
 configs = merge(configs, config_override.configs)
 
-print(configs)
+
+class Dict(dict):
+    def __getattr__(self, key):
+        return self[key]
+
+    def __setattr__(self, key, val):
+        self[key] = val
+
+
+def toDict(d):
+    res = Dict()
+    for k, v in d.items():
+        res[k] = toDict(v) if isinstance(v, dict) else v
+    return res
+
+
+configs = toDict(configs)

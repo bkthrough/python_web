@@ -33,19 +33,17 @@ def init_jinja2(app, **kw):
 
 
 async def init(loop):
-    app = web.Application(loop=loop, middlewares=[response_factory])
+    from middleware import auth_factory
+    app = web.Application(loop=loop,
+                          middlewares=[response_factory, auth_factory])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
     add_routes(app, 'handlers')
     add_static(app)
-    srv = await loop.create_server(app.make_handler(),
-                                   configs['server']['host'],
-                                   configs['server']['port'])
+    srv = await loop.create_server(app.make_handler(), configs.server.host,
+                                   configs.server.port)
     logging.info('server started at http://127.0.0.1:8888...')
     import orm
-    await orm.create_pool(loop, **configs['db'])
-    from models import User
-    user = User(id="111", name="jerry", email='', passwd='', admin=True, image='')
-    await user.save()
+    await orm.create_pool(loop, **configs.db)
     return srv
 
 
