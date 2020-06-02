@@ -37,7 +37,7 @@ async def index(request):
 
 
 @get('/register')
-def register():
+async def register():
     return {'__template__': 'register.html'}
 
 
