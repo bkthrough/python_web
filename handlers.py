@@ -41,6 +41,11 @@ async def register():
     return {'__template__': 'register.html'}
 
 
+@get('/login')
+async def login():
+    return {'__template__': 'login.html'}
+
+
 @get('/user')
 async def getUser(request):
     users = await User.findAll()
