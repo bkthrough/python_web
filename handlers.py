@@ -19,21 +19,7 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 @get('/')
 async def index(request):
-    summary = "asdddddda asdasdsad sad asdowef npwn ef oweif owef lkds fkjf dkvjhdfkjhk gjhs "
-    blogs = [
-        Blog(id='1',
-             name='first blog',
-             summary=summary,
-             created_at=time.time() - 1000),
-        Blog(id='2',
-             name='second blog',
-             summary=summary,
-             created_at=time.time() - 2000),
-        Blog(id='3',
-             name='third blog',
-             summary=summary,
-             created_at=time.time())
-    ]
+    blogs = await Blog.findAll()
     return {'__template__': 'blogs.html', 'blogs': blogs}
 
 
@@ -47,10 +33,28 @@ async def login():
     return {'__template__': 'login.html'}
 
 
+@get('/create/blog')
+async def create_blogs():
+    return {'__template__': 'blogManager.html'}
+
+
 @get('/user')
 async def getUser(request):
     users = await User.findAll()
     return dict(users=users)
+
+
+@post('/api/blog')
+async def api_create_blogs(request, *, title, summary, content):
+    blog = Blog(user_id=request.__user__.id,
+                user_name=request.__user__.name,
+                user_image=request.__user__.image,
+                name=title.strip(),
+                summary=summary.strip(),
+                content=content.strip(),
+                created_at=time.time())
+    await blog.save()
+    return blog
 
 
 @post('/api/users')

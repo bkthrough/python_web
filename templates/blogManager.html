@@ -1,0 +1,74 @@
+{% extends '__base__.html' %}
+
+{% block title %}日志编辑{% endblock %}
+
+{% block content %}
+
+<div class="uk-width-medium-3-4">
+    <h1>请编写内容</h1>
+    <form id="vm" class="uk-form uk-form-stacked">
+        <div class="uk-alert uk-alert-danger uk-hidden"></div>
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <input v-model="title" type="text" maxlength="50" placeholder="title" class="uk-width-1-1 uk-input">
+                </input>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <textarea v-model="summary" type="text" rows="2" placeholder="summary" class="uk-width-1-1 uk-textarea">
+                </textarea>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <div class="uk-form-controls">
+                <textarea v-model="content" type="text" rows="20" placeholder="content"
+                    class="uk-width-1-1 uk-textarea">
+                </textarea>
+            </div>
+        </div>
+        <div class="uk-margin">
+            <button v-on:click='confirm' class="uk-button uk-button-primary">确认</button>
+            <button v-on:click='cancel' class="uk-button uk-button-default">取消</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    var vue = new Vue({
+        el: "#vm",
+        data: {
+            title: "",
+            summary: "",
+            content: "",
+        },
+        methods: {
+            confirm: function (event) {
+                event.preventDefault()
+                var $form = $('#vm');
+                if (!this.title.trim()) {
+                    return $form.showFormError("请输入标题")
+                }
+                if (!this.content.trim()) {
+                    return $form.showFormError("请输入内容")
+                }
+                $form.postJSON('/api/blog', {
+                    title: this.title,
+                    summary: this.summary,
+                    content: this.content
+                }, function (err, r) {
+                    if (err) {
+                        return $form.showFormError(err)
+                    }
+                    alert("创建成功")
+                    return location.assign('/')
+                })
+            },
+            cancel: function () {
+                return location.assign('/')
+            }
+        }
+    })
+</script>
+
+{% endblock %}
