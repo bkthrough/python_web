@@ -13,8 +13,7 @@
         <div class="uk-alert uk-alert-danger uk-hidden"></div>
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <input v-model="name" type="text" maxlength="50" placeholder="name"
-                    v-bind:class="uk-width-1-1 uk-input">
+                <input v-model="name" type="text" maxlength="50" placeholder="name" class="uk-width-1-1 uk-input">
             </div>
         </div>
         <div class="uk-margin">
@@ -34,7 +33,7 @@
                     class="uk-width-1-1 uk-input">
             </div>
         </div>
-        <div class="uk-form-row">
+        <div class="uk-margin">
             <button v-on:click='submit' class="uk-button uk-button-primary"><i class="uk-icon-user"></i> 注册</button>
         </div>
     </form>
@@ -47,7 +46,7 @@
         var re = /^[a-z0-9\.\-\_]+\@[a-z0-9\-\_]+(\.[a-z0-9\-\_]+){1,4}$/;
         return re.test(email.toLowerCase());
     }
-    new Vue({
+    var vue = new Vue({
         el: '#vm',
         data: {
             name: '',
@@ -80,10 +79,11 @@
                     if (err) {
                         return $form.showFormError(err);
                     }
+                    alert('注册成功！！')
                     return location.assign('/');
                 });
             }
         }
-    })
+    });
 </script>
 {% endblock %}

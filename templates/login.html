@@ -13,8 +13,7 @@
         <div class="uk-alert uk-alert-danger uk-hidden"></div>
         <div class="uk-margin">
             <div class="uk-form-controls">
-                <input v-model="email" type="text" maxlength="50" placeholder="email"
-                    v-bind:class="uk-width-1-1 uk-input">
+                <input v-model="email" type="text" maxlength="50" placeholder="email" class="uk-width-1-1 uk-input">
             </div>
         </div>
         <div class="uk-margin">
@@ -60,6 +59,7 @@
                     if (err) {
                         return $form.showFormError(err);
                     }
+                    alert("登录成功！！")
                     return location.assign('/');
                 });
             }
