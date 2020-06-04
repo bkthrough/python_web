@@ -7,6 +7,7 @@ import hashlib
 from aiohttp import web
 import json
 from config import configs
+import logging
 
 COOKIE_NAME = 'cooksession'
 _COOKIE_KEY = configs.session.secret
@@ -124,18 +125,20 @@ async def cookie2user(cookie_str):
         user = await User.find(uid)
         if user is None:
             return None
-            s = '%s-%s-%s-%s' % (uid, user.passwd, expires, _COOKIE_KEY)
+        s = '%s-%s-%s-%s' % (uid, user.passwd, expires, _COOKIE_KEY)
         if sha1 != hashlib.sha1(s.encode('utf-8')).hexdigest():
             return None
         user.passwd = '******'
         return user
-    except Exception:
+    except Exception as e:
+        logging.warning(e)
         return None
 
 
 def user2cookie(user, max_age):
     expires = str(int(time.time() + max_age))
     s = '%s-%s-%s-%s' % (user.id, user.passwd, expires, _COOKIE_KEY)
-    return '-'.join(
+    res = '-'.join(
         [user.id, expires,
          hashlib.sha1(s.encode('utf-8')).hexdigest()])
+    return res
