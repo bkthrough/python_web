@@ -35,13 +35,30 @@ async def login():
 
 @get('/create/blog')
 async def create_blogs():
-    return {'__template__': 'blogManager.html'}
+    return {'__template__': 'create_blog.html'}
+
+
+@get('/manage/blogs')
+async def manage_blogs(*, page=1):
+    return {'__template__': 'manage_blogs.html', 'page_index': page}
 
 
 @get('/user')
 async def getUser(request):
     users = await User.findAll()
     return dict(users=users)
+
+
+@get('/api/blogs')
+async def api_blogs(*, page=1):
+    num = await Blog.findNumber('count(id)')
+    from apis import Page
+    p = Page(num, page)
+    if num == 0:
+        return dict(page=p, blogs=())
+    blogs = await Blog.findAll(orderBy='created_at desc',
+                               limit=(p.offset, p.limit))
+    return dict(page=p, blogs=blogs)
 
 
 @post('/api/blog')
