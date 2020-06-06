@@ -24,7 +24,10 @@ async def create_pool(loop, **kw):
 
 
 async def select(sql, args, size=None):
-    log(sql.replace('?', '%s') % (*args, ))
+    if args:
+        log(sql.replace('?', '%s') % (*args, ))
+    else:
+        log(sql)
     global __pool
     async with __pool.get() as conn:
         async with conn.cursor(aiomysql.DictCursor) as cur:
@@ -38,7 +41,10 @@ async def select(sql, args, size=None):
 
 
 async def execute(sql, args, autocommit=True):
-    log(sql.replace('?', '%s') % (*args, ))
+    if args:
+        log(sql.replace('?', '%s') % (*args, ))
+    else:
+        log(sql)
     async with __pool.get() as conn:
         if not autocommit:
             await conn.begin()

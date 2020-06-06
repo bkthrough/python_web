@@ -39,7 +39,7 @@ async def create_blogs():
 
 
 @get('/manage/blogs')
-async def manage_blogs(*, page=1):
+async def manage_blogs(*, page="1"):
     return {'__template__': 'manage_blogs.html', 'page_index': page}
 
 
@@ -50,10 +50,11 @@ async def getUser(request):
 
 
 @get('/api/blogs')
-async def api_blogs(*, page=1):
+async def api_blogs(*, page="1"):
+    index = int(page)
     num = await Blog.findNumber('count(id)')
     from apis import Page
-    p = Page(num, page)
+    p = Page(num, index)
     if num == 0:
         return dict(page=p, blogs=())
     blogs = await Blog.findAll(orderBy='created_at desc',

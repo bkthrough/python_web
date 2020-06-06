@@ -29,7 +29,7 @@
         </div>
         <div class="uk-margin">
             <button v-on:click='confirm' class="uk-button uk-button-primary">确认</button>
-            <button v-on:click='cancel' class="uk-button uk-button-default">取消</button>
+            <a class="uk-button uk-button-default" href='/manage/blogs'>取消</a></button>
         </div>
     </form>
 </div>
@@ -64,9 +64,6 @@
                     return location.assign('/')
                 })
             },
-            cancel: function () {
-                return location.assign('/')
-            }
         }
     })
 </script>
