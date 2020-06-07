@@ -18,9 +18,15 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 
 @get('/')
-async def index(request):
+async def index():
     blogs = await Blog.findAll()
-    return {'__template__': 'blogs.html', 'blogs': blogs}
+    return {'__template__': 'index.html', 'blogs': blogs}
+
+
+@get('/blog/{id}')
+async def getBlog(id):
+    blog = await Blog.find(id)
+    return {'__template__': 'blog.html', 'blog': blog}
 
 
 @get('/register')
