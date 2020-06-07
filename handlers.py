@@ -18,9 +18,12 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 
 @get('/')
-async def index():
+async def index(request):
     blogs = await Blog.findAll()
-    return {'__template__': 'index.html', 'blogs': blogs}
+    return {
+        '__template__': 'index.html',
+        'blogs': blogs,
+    }
 
 
 @get('/blog/{id}')
@@ -37,6 +40,15 @@ async def register():
 @get('/login')
 async def login():
     return {'__template__': 'login.html'}
+
+
+@get('/logout')
+async def logout(request):
+    # referer表示从那个链接发过来，登出后回到之前那个页面
+    referer = request.headers.get('Referer')
+    r = web.HTTPFound(referer or '/')
+    r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
+    return r
 
 
 @get('/create/blog')

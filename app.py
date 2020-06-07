@@ -4,7 +4,6 @@ from coroweb import add_routes, add_static
 import asyncio
 from aiohttp import web
 import logging
-import json
 import os
 import time
 import datetime
@@ -33,7 +32,7 @@ def init_jinja2(app, **kw):
 
 
 async def init(loop):
-    from middleware import auth_factory
+    from middleware import auth_factory, response_factory
     app = web.Application(loop=loop,
                           middlewares=[response_factory, auth_factory])
     init_jinja2(app, filters=dict(datetime=datetime_filter))
@@ -59,50 +58,6 @@ def datetime_filter(t):
         return u'%s天前' % (delta // 86400)
     dt = datetime.fromtimestamp(t)
     return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
-
-
-async def response_factory(app, handler):
-    async def response(request):
-        logging.info('Response handler...')
-        r = await handler(request)
-        if isinstance(r, web.StreamResponse):
-            return r
-        if isinstance(r, bytes):
-            resp = web.Response(body=r)
-            resp.content_type = 'application/octet-stream'
-            return resp
-        if isinstance(r, str):
-            if r.startswith('redirect:'):
-                return web.HTTPFound(r[9:])
-            resp = web.Response(body=r.encode('utf-8'))
-            resp.content_type = 'text/html;charset=utf-8'
-            return resp
-        if isinstance(r, dict):
-            template = r.get('__template__')
-            if template is None:
-                resp = web.Response(body=json.dumps(
-                    r, ensure_ascii=False,
-                    default=lambda o: o.__dict__).encode('utf-8'))
-                resp.content_type = 'application/json;charset=utf-8'
-                return resp
-            else:
-                resp = web.Response(
-                    body=app['__templating__'].get_template(template).render(
-                        **r).encode('utf-8'))
-                resp.content_type = 'text/html;charset=utf-8'
-                return resp
-        if isinstance(r, int) and r >= 100 and r < 600:
-            return web.Response(r)
-        if isinstance(r, tuple) and len(r) == 2:
-            t, m = r
-            if isinstance(t, int) and t >= 100 and t < 600:
-                return web.Response(t, str(m))
-        # default:
-        resp = web.Response(body=str(r).encode('utf-8'))
-        resp.content_type = 'text/plain;charset=utf-8'
-        return resp
-
-    return response
 
 
 loop = asyncio.get_event_loop()
