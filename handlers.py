@@ -137,6 +137,13 @@ async def createComment(request, *, content, blogId):
     return comment
 
 
+@post("/api/delete/comment")
+async def deleteComment(request, *, commentId):
+    comment = await Comment.find(commentId)
+    await comment.remove()
+    return dict(id=commentId)
+
+
 @post('/api/authenticate')
 async def authenticate(*, email, passwd):
     if not email:

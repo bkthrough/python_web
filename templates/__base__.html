@@ -32,6 +32,9 @@
                     <a href="#0"><i uk-icon="user"></i> %% user.name %%</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
+                            {% if user.admin %}
+                            <li><a href="/manage/blogs"><i uk-icon="cog"></i> 管理博客</a></li>
+                            {% endif %}
                             <li><a href="/logout"><i uk-icon="sign-out"></i> 登出</a></li>
                         </ul>
                     </div>

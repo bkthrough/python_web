@@ -37,6 +37,11 @@
                     <p class="uk-comment-meta uk-margin-remove-top">
                         %% comment.created_at|datetime %%
                     </p>
+                    {%if user.admin or user.id == comment.user_id%}
+                    <a v-on:click="deleteComment('%%comment.id%%')" class="uk-position-top-right uk-position-small">
+                        <icon uk-icon="trash" />
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </header>
@@ -69,6 +74,15 @@
                         return $form.showFormError(err)
                     }
                     refresh()
+                })
+            },
+            deleteComment: function (commentId) {
+                postJSON('/api/delete/comment', {
+                    commentId
+                }, function (err, r) {
+                    if (!err) {
+                        refresh()
+                    }
                 })
             }
         }
