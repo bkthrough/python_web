@@ -4,16 +4,45 @@
 
 {% block content %}
 
-<artical class="uk-artical">
-    <h1 class="uk-artical-title">
-        %% blog.name %%
-    </h1>
-    <p class="uk-artical-lead">
-        %% blog.summary %%
-    </p>
-    <p>
-        %% blog.content %%
-    </p>
-</artical>
+<div id="vm">
+    <artical class="uk-artical">
+        <h1 class="uk-artical-title">
+            %% blog.name %%
+        </h1>
+        <p class="uk-artical-lead">
+            %% blog.summary %%
+        </p>
+        <p>
+            %% blog.content %%
+        </p>
+    </artical>
+    <form id="form" class="uk-form">
+        <div class="uk-alert uk-alert-danger uk-hidden"></div>
+        <div>发表评论</div>
+        <textarea v-model="comment" type="text" rows="3" placeholder="comment" class="uk-textarea"></textarea>
+        <button v-on:click="submit" class="uk-button-primary">提交评论</button>
+    </form>
+</div>
+
+<script>
+    new Vue({
+        el: "#vm",
+        data: {
+            comment: ""
+        },
+        methods: {
+            submit: function () {
+                let $form = $("form")
+                if (!this.comment.trim()) {
+                    return $form.showFormError("请输入评论")
+                }
+                $form.postJSON('/api/create/comment', {
+                    comment: this.comment,
+                    blogId: %% blog.id %%
+                })
+            }
+        }
+    })
+</script>
 
 {% endblock %}

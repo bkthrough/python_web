@@ -124,6 +124,11 @@ async def api_register_user(*, email, name, passwd):
     return r
 
 
+@post('/api/create/comment')
+async def createComment(request, *, comment, blogId):
+    a= 3
+
+
 @post('/api/authenticate')
 async def authenticate(*, email, passwd):
     if not email:
