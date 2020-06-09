@@ -57,6 +57,7 @@ async def create_blogs():
     return {'__template__': 'create_blog.html'}
 
 
+# 管理博客
 @get('/manage/blogs')
 async def manage_blogs(*, page="1"):
     return {'__template__': 'manage_blogs.html', 'page_index': page}
