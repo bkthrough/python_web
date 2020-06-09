@@ -1,5 +1,5 @@
 from coroweb import get, post
-from models import Blog, User, next_id
+from models import Blog, User, Comment, next_id
 import time
 from apis import APIValueError, APIError
 import re
@@ -29,7 +29,8 @@ async def index(request):
 @get('/blog/{id}')
 async def getBlog(id):
     blog = await Blog.find(id)
-    return {'__template__': 'blog.html', 'blog': blog}
+    comments = await Comment.findAll("blog_id=?", [id])
+    return {'__template__': 'blog.html', 'blog': blog, "comments": comments}
 
 
 @get('/register')
@@ -125,8 +126,15 @@ async def api_register_user(*, email, name, passwd):
 
 
 @post('/api/create/comment')
-async def createComment(request, *, comment, blogId):
-    a= 3
+async def createComment(request, *, content, blogId):
+    user = request.__user__
+    comment = Comment(blog_id=blogId,
+                      content=content,
+                      user_id=user.id,
+                      user_name=user.name,
+                      user_image=user.image)
+    await comment.save()
+    return comment
 
 
 @post('/api/authenticate')

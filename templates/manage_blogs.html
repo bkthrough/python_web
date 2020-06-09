@@ -65,16 +65,13 @@
             }
         })
     }
-    // 没有问题，提示有误
-    index = %% page_index %%;
 
     getJSON('/api/blogs', {
-        page: index
+        page: "%% page_index %%"
     }, function (err, result) {
         if (err) {
             return fatal(err)
         }
-        $('loading').hide()
         initVM(result)
     })
 </script>

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div id="vm">
+<div id="vm" class="uk-width-1-1">
     <artical class="uk-artical">
         <h1 class="uk-artical-title">
             %% blog.name %%
@@ -16,12 +16,36 @@
             %% blog.content %%
         </p>
     </artical>
-    <form id="form" class="uk-form">
+    <form id="form" class="uk-form uk-margin">
         <div class="uk-alert uk-alert-danger uk-hidden"></div>
-        <div>发表评论</div>
+        <h4>发表评论</h4>
         <textarea v-model="comment" type="text" rows="3" placeholder="comment" class="uk-textarea"></textarea>
         <button v-on:click="submit" class="uk-button-primary">提交评论</button>
     </form>
+    <div class="uk-comment uk-comment uk-margin uk-width-expand">
+        <h4 class="uk-margin">评论：</h4>
+        {% for comment in comments %}
+        <header class="uk-comment-header uk-position-relative">
+            <div class="uk-grid-medium uk-flex-middle" uk-grid>
+                <div class="uk-width-auto">
+                    <img class="uk-comment-avatar" src="%% comment.user_image %%" width="60" height="60" alt="">
+                </div>
+                <div class="uk-width-expand">
+                    <h4 class="uk-comment-title uk-margin-remove">
+                        %% comment.user_name %%
+                    </h4>
+                    <p class="uk-comment-meta uk-margin-remove-top">
+                        %% comment.created_at|datetime %%
+                    </p>
+                </div>
+            </div>
+        </header>
+        <div class="uk-comment-body">
+            <p>%% comment.content %%</p>
+        </div>
+        <hr class="uk-article-divider">
+        {% endfor %}
+    </div>
 </div>
 
 <script>
@@ -31,14 +55,20 @@
             comment: ""
         },
         methods: {
-            submit: function () {
-                let $form = $("form")
+            submit: function (event) {
+                event.preventDefault()
+                let $form = $("#form")
                 if (!this.comment.trim()) {
                     return $form.showFormError("请输入评论")
                 }
                 $form.postJSON('/api/create/comment', {
-                    comment: this.comment,
-                    blogId: %% blog.id %%
+                    content: this.comment,
+                    blogId: "%% blog.id %%"
+                }, function (err, r) {
+                    if (err) {
+                        return $form.showFormError(err)
+                    }
+                    refresh()
                 })
             }
         }
