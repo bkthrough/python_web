@@ -35,37 +35,59 @@
 </div>
 
 <script>
-    var vue = new Vue({
-        el: "#vm",
-        data: {
+    function initVue(blog) {
+        let data = {
             title: "",
             summary: "",
             content: "",
-        },
-        methods: {
-            confirm: function (event) {
-                event.preventDefault()
-                var $form = $('#vm');
-                if (!this.title.trim()) {
-                    return $form.showFormError("请输入标题")
-                }
-                if (!this.content.trim()) {
-                    return $form.showFormError("请输入内容")
-                }
-                $form.postJSON('/api/blog', {
-                    title: this.title,
-                    summary: this.summary,
-                    content: this.content
-                }, function (err, r) {
-                    if (err) {
-                        return $form.showFormError(err)
-                    }
-                    alert("创建成功")
-                    return location.assign('/')
-                })
-            },
         }
-    })
+        let id = ""
+        if (blog) {
+            id = blog.id
+            data = {
+                title: blog.name,
+                summary: blog.summary,
+                content: blog.content
+            }
+        }
+        new Vue({
+            el: "#vm",
+            data,
+            methods: {
+                confirm: function (event) {
+                    event.preventDefault()
+                    var $form = $('#vm');
+                    if (!this.title.trim()) {
+                        return $form.showFormError("请输入标题")
+                    }
+                    if (!this.content.trim()) {
+                        return $form.showFormError("请输入内容")
+                    }
+                    $form.postJSON('/api/blog', {
+                        title: this.title,
+                        summary: this.summary,
+                        content: this.content,
+                        blogId: id
+                    }, function (err, r) {
+                        if (err) {
+                            return $form.showFormError(err)
+                        }
+                        return location.assign('/')
+                    })
+                },
+            }
+        })
+    }
+    if ('%%blogId%%') {
+        getJSON('/api/blog', { blogId: '%%blogId%%' }, function (err, blog) {
+            if (!err) {
+                initVue(blog)
+            }
+        })
+    } else {
+        initVue(null)
+    }
+
 </script>
 
 {% endblock %}

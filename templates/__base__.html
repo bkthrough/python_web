@@ -28,6 +28,9 @@
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
                 {% if user %}
+                {% if user.admin %}
+                <li><a href="/create/blog"><i uk-icon="pencil"></i> 创建博客</a></li>
+                {% endif %}
                 <li>
                     <a href="#0"><i uk-icon="user"></i> %% user.name %%</a>
                     <div class="uk-navbar-dropdown">

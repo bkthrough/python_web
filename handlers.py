@@ -53,8 +53,13 @@ async def logout(request):
 
 
 @get('/create/blog')
-async def create_blogs():
+async def create_blog():
     return {'__template__': 'create_blog.html'}
+
+
+@get('/manage/blogs/edit')
+async def editBlog(*, blogId):
+    return {'__template__': 'create_blog.html', 'blogId': blogId}
 
 
 # 管理博客
@@ -82,17 +87,37 @@ async def api_blogs(*, page="1"):
     return dict(page=p, blogs=blogs)
 
 
-@post('/api/blog')
-async def api_create_blogs(request, *, title, summary, content):
-    blog = Blog(user_id=request.__user__.id,
-                user_name=request.__user__.name,
-                user_image=request.__user__.image,
-                name=title.strip(),
-                summary=summary.strip(),
-                content=content.strip(),
-                created_at=time.time())
-    await blog.save()
+@get('/api/blog')
+async def api_get_blog(*, blogId):
+    blog = await Blog.find(blogId)
     return blog
+
+
+@post('/api/blog')
+async def api_create_blogs(request, *, title, summary, content, blogId):
+    if blogId:
+        blog = await Blog.find(blogId)
+        blog.name = title
+        blog.summary = summary
+        blog.content = content
+        await blog.update()
+    else:
+        blog = Blog(user_id=request.__user__.id,
+                    user_name=request.__user__.name,
+                    user_image=request.__user__.image,
+                    name=title.strip(),
+                    summary=summary.strip(),
+                    content=content.strip(),
+                    created_at=time.time())
+        await blog.save()
+    return blog
+
+
+@post('/api/delete/blog')
+async def api_delete_blog(*, blogId):
+    blog = await Blog.find(blogId)
+    await blog.remove()
+    return dict(blogId=blogId)
 
 
 @post('/api/users')
