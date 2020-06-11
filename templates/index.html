@@ -4,37 +4,49 @@
 
 {% block content %}
 
-<div class="uk-width-medium-3-4">
-    <ul class="uk-list uk-list-divider uk-list-large">
-        {% for blog in blogs %}
-        <li>
-            <article class="uk-article">
-                <h1 class="uk-article-title"><a class="uk-link-reset" href="/blog/%% blog.id %%">%% blog.name %%</a>
-                </h1>
-                <p class="uk-article-meta">发表于%% blog.created_at|datetime %%</p>
-                <p class="uk-text-lead">%% blog.summary %%</p>
-                <p style="-webkit-box-orient: vertical;
+<div class="uk-margin-medium uk-grid" uk-grid>
+    <div class="uk-width-1-1 uk-width-2-3@s uk-first-column">
+        <ul class="uk-list uk-list-divider uk-list-large">
+            {% for blog in blogs %}
+            <li>
+                <article class="uk-article">
+                    <h1 class="uk-article-title"><a class="uk-link-reset" href="/blog/%% blog.id %%">%% blog.name %%</a>
+                    </h1>
+                    <p class="uk-article-meta">发表于%% blog.created_at|datetime %%</p>
+                    <p class="uk-text-lead">%% blog.summary %%</p>
+                    <p style="-webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;">%% blog.content %%</p>
-                <p><a href="/blog/%% blog.id %%">阅读更多 <i uk-icon="chevron-double-right"></i></a></p>
-            </article>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div class="uk-width-medium-1-4">
-    <div class="uk-panel uk-panel-header">
-        <h3 class="uk-panel-title">友情链接</h3>
-        <ul class="uk-list uk-list-line">
-            <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="#">编程</a></li>
-            <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="#">读书</a></li>
-            <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="#">Python教程</a></li>
-            <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank" href="#">Git教程</a></li>
+                    <p><a href="/blog/%% blog.id %%">阅读更多 <i uk-icon="chevron-double-right"></i></a></p>
+                </article>
+            </li>
+            {% endfor %}
         </ul>
     </div>
-</div>
 
+    <div class="uk-width-1-1 uk-width-1-3@s">
+        <div class="uk-card uk-card-body">
+            <h3 class="uk-card-title">归档</h3>
+            <ul class="uk-list uk-list-divider">
+                <li><a href="#">2020年3月</a></li>
+                <li><a href="#">2020年5月</a></li>
+                <li><a href="#">2020年6月</a></li>
+                <li><a href="#">2020年4月</a></li>
+            </ul>
+        </div>
+        <div class="uk-card uk-card-body">
+            <h3 class="uk-panel-title">链接</h3>
+            <ul class="uk-list uk-list-line">
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank"
+                        href="https://blog.csdn.net/myiloveuuu">我的博客</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank"
+                        href="https://github.com/bkthrough">我的github</a></li>
+                <li><i class="uk-icon-thumbs-o-up"></i> <a target="_blank"
+                        href="https://blog.csdn.net/gemini_two">马艳的博客</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

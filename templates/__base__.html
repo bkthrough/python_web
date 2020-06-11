@@ -16,36 +16,38 @@
 </head>
 
 <body>
-    <nav class="uk-navbar uk-background-primary uk-light" uk-navbar>
-        <div class="uk-navbar-left">
-            <a href="/" class="uk-navbar-item uk-logo">Jerry's Blog</a>
-            <ul class="uk-navbar-nav">
-                <li class="uk-active" data-url="blogs"><a href="/"><i uk-icon="home"></i>首页</a></li>
-            </ul>
-        </div>
-        <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav uk-dark">
-                {% if user %}
-                {% if user.admin %}
-                <li><a href="/create/blog"><i uk-icon="pencil"></i> 创建博客</a></li>
-                {% endif %}
-                <li>
-                    <a href="#0"><i uk-icon="user"></i> %% user.name %%</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            {% if user.admin %}
-                            <li><a href="/manage/blogs"><i uk-icon="cog"></i> 管理博客</a></li>
-                            {% endif %}
-                            <li><a href="/logout"><i uk-icon="sign-out"></i> 登出</a></li>
-                        </ul>
-                    </div>
-                </li>
-                {% else %}
-                <li><a href="/login"><i uk-icon="sign-in"></i> 登陆</a></li>
-                <li><a href="/register"><i uk-icon="user"></i> 注册</a></li>
-                {% endif %}
-        </div>
-    </nav>
+    <div class="uk-margin-medium-bottom">
+        <nav class="uk-navbar uk-background-primary uk-light" uk-navbar>
+            <div class="uk-navbar-left">
+                <a href="/" class="uk-navbar-item uk-logo">Jerry's Blog</a>
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active" data-url="blogs"><a href="/"><i uk-icon="home"></i>首页</a></li>
+                </ul>
+            </div>
+            <div class="uk-navbar-right">
+                <ul class="uk-navbar-nav uk-dark">
+                    {% if user %}
+                    {% if user.admin %}
+                    <li><a href="/create/blog"><i uk-icon="pencil"></i> 创建博客</a></li>
+                    {% endif %}
+                    <li>
+                        <a href="#0"><i uk-icon="user"></i> %% user.name %%</a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                {% if user.admin %}
+                                <li><a href="/manage/blogs"><i uk-icon="cog"></i> 管理博客</a></li>
+                                {% endif %}
+                                <li><a href="/logout"><i uk-icon="sign-out"></i> 登出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li><a href="/login"><i uk-icon="sign-in"></i> 登陆</a></li>
+                    <li><a href="/register"><i uk-icon="user"></i> 注册</a></li>
+                    {% endif %}
+            </div>
+        </nav>
+    </div>
     <div class="uk-container uk-container-center">
         <div class="uk-grid">
             <!-- content -->
