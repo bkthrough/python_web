@@ -16,17 +16,15 @@
 </head>
 
 <body>
-    <nav class="uk-navbar-container uk-margin" uk-navbar>
+    <nav class="uk-navbar uk-background-primary uk-light" uk-navbar>
         <div class="uk-navbar-left">
-            <a href="/" class="uk-navbar-logo">Jerry's Blog</a>
+            <a href="/" class="uk-navbar-item uk-logo">Jerry's Blog</a>
             <ul class="uk-navbar-nav">
-                <li data-url="blogs"><a href="/"><i uk-icon="home"></i> 日志</a></li>
-                <li><a target="_blank" href="#"><i uk-icon="bookmark"></i> 教程</a></li>
-                <li><a target="_blank" href="#"><i uk-icon="code"></i> 源码</a></li>
+                <li class="uk-active" data-url="blogs"><a href="/"><i uk-icon="home"></i>首页</a></li>
             </ul>
         </div>
         <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav">
+            <ul class="uk-navbar-nav uk-dark">
                 {% if user %}
                 {% if user.admin %}
                 <li><a href="/create/blog"><i uk-icon="pencil"></i> 创建博客</a></li>
@@ -61,11 +59,9 @@
         <div class="uk-container uk-container-center uk-text-center">
             <div class="uk-panel uk-margin-top uk-margin-bottom">
                 <p>
-                    <a target="_blank" href="#" uk-icon="github"></a>
-                    <a target="_blank" href="#" uk-icon="twitter"></a>
+                    <a target="_blank" href="https://github.com/bkthrough" uk-icon="github"></a>
                 </p>
-                <p>Powered by <a href="#">Awesome Python Webapp</a>. Copyright &copy; 2014. [<a href="/manage/"
-                        target="_blank">Manage</a>]</p>
+                <p>Powered by <a href="#">Python Webapp</a>. Copyright &copy; 2020. </p>
                 <p><a href="http://www.liaoxuefeng.com/" target="_blank">www.liaoxuefeng.com</a>. All rights reserved.
                 </p>
                 <a target="_blank" href="#"><i uk-icon="html5" style="font-size:64px; color: #444;"></i></a>

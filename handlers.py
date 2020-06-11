@@ -20,10 +20,7 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 @get('/')
 async def index(request):
     blogs = await Blog.findAll()
-    return {
-        '__template__': 'index.html',
-        'blogs': blogs,
-    }
+    return {'__template__': 'index.html', 'blogs': blogs}
 
 
 @get('/blog/{id}')

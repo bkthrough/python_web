@@ -5,15 +5,24 @@
 {% block content %}
 
 <div class="uk-width-medium-3-4">
-    {% for blog in blogs %}
-    <article class="uk-article">
-        <h2><a href="/blog/%% blog.id %%">%% blog.name %%</a></h2>
-        <p class="uk-article-meta">发表于%% blog.created_at|datetime %%</p>
-        <p>%% blog.summary %%</p>
-        <p><a href="/blog/%% blog.id %%">继续阅读 <i uk-icon="chevron-double-right"></i></a></p>
-    </article>
-    <hr class="uk-article-divider">
-    {% endfor %}
+    <ul class="uk-list uk-list-divider uk-list-large">
+        {% for blog in blogs %}
+        <li>
+            <article class="uk-article">
+                <h1 class="uk-article-title"><a class="uk-link-reset" href="/blog/%% blog.id %%">%% blog.name %%</a>
+                </h1>
+                <p class="uk-article-meta">发表于%% blog.created_at|datetime %%</p>
+                <p class="uk-text-lead">%% blog.summary %%</p>
+                <p style="-webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;">%% blog.content %%</p>
+                <p><a href="/blog/%% blog.id %%">阅读更多 <i uk-icon="chevron-double-right"></i></a></p>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
 </div>
 
 <div class="uk-width-medium-1-4">
